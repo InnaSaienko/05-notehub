@@ -36,7 +36,7 @@ const App = () => {
         <div className={css.app}>
             <header className={css.toolbar}>
                 <SearchBox onSearch={handleSearch}/>
-                {totalPages > 1 && <Pagination/>}
+                {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={page} onPageChange={setPage} />}
                 <button className={css.button} onClick={() => setIsModalOpen(true)}>
                     Create note +
                 </button>
