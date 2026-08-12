@@ -20,6 +20,6 @@ export type NoteFormData = Omit<Note, "id" | "createdAt" | "updatedAt" | "tag"> 
 };
 
 export interface NoteSearchParams {
-  query?: string;
+  search?: string;
   tagIds?: string[];
 }
