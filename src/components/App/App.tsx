@@ -42,14 +42,8 @@ const App = () => {
                 </button>
             </header>
             <main className={css.main}>
-                {isLoading && (
-                    <div className={css.loaderWrapper}>
-                        <Loader/>
-                    </div>
-                )}
-                {isError && (
-                    <ErrorMessage message="Something went wrong while fetching notes. Please try again later."/>
-                )}
+                {isLoading && <Loader/>}
+                {isError && <ErrorMessage message="Something went wrong while fetching notes. Please try again later."/>}
                 {!isLoading && !isError && notes.length === 0 && <p className={css.empty}>No notes found.</p>}
                 {!isLoading && !isError && <NoteList notes={notes}/>}
             </main>
