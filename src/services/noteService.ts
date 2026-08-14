@@ -1,32 +1,6 @@
-import axios, {type AxiosResponse, AxiosError} from 'axios';
+import axios, {type AxiosResponse} from 'axios';
 import type {Note, NoteFormData, NoteSearchParams} from '../types/note';
 
-// API Note type that matches the server response
-export interface ApiNote {
-    id: string;
-    title: string;
-    content: string;
-    createdAt: string;
-    updatedAt: string;
-    tag?: string;
-}
-
-// HTTP Response Interfaces
-export interface FetchNotesResponse {
-    notes: ApiNote[];
-    totalPages: number;
-}
-
-export interface CreateNoteResponse {
-    data: Note;
-    message?: string;
-}
-
-export interface DeleteNoteResponse {
-    message: string;
-    id: string;
-    data?: Note;
-}
 
 // HTTP Request Parameters Interfaces
 export interface FetchNotesParams extends NoteSearchParams {
@@ -35,18 +9,10 @@ export interface FetchNotesParams extends NoteSearchParams {
     search?: string;
 }
 
-export interface CreateNoteParams {
-    noteData: NoteFormData;
+export interface FetchNotesResponse {
+    notes: Note[];
+    totalPages: number;
 }
-
-export interface DeleteNoteParams {
-    id: string;
-}
-
-// Axios Response Types
-export type AxiosFetchNotesResponse = AxiosResponse<FetchNotesResponse>;
-export type AxiosCreateNoteResponse = AxiosResponse<CreateNoteResponse>;
-export type AxiosDeleteNoteResponse = AxiosResponse<DeleteNoteResponse>;
 
 // Base API configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -65,54 +31,23 @@ const notesApi = axios.create({
 export const fetchNotes = async (
     params: FetchNotesParams = {}
 ): Promise<FetchNotesResponse> => {
-    try {
-        const response: AxiosFetchNotesResponse = await notesApi.get("", {
-            params: {
-                page: params.page,
-                perPage: params.perPage,
-                ...(params.search && { search: params.search }),
-            },
-        });
-        return response.data;
-    } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        throw new Error(
-            axiosError.response?.data?.message || axiosError.message || 'Failed to fetch notes'
-        );
-    }
+    const requestParams: Record<string, string | number | undefined> = {
+        page: params.page,
+        perPage: params.perPage,
+        search: params.search,
+    };
+
+    const response: AxiosResponse<FetchNotesResponse> = await notesApi.get("", {params: requestParams,});
+    return response.data;
 };
 
-export const createNote = async (
-    params: CreateNoteParams
-): Promise<CreateNoteResponse> => {
-    try {
-        const response: AxiosCreateNoteResponse = await axios.post(notesEndpoint, {
-            title: params.noteData.title,
-            content: params.noteData.content,
-            tag: params.noteData.tags[0]?.name,
-        });
-        return response.data;
-    } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        throw new Error(
-            axiosError.response?.data?.message || axiosError.message || 'Failed to create note'
-        );
-    }
+export const createNote = async (note: NoteFormData): Promise<Note> => {
+    const response: AxiosResponse<Note> = await notesApi.post(notesEndpoint, note);
+    return response.data;
 };
 
-export const deleteNote = async (
-    id: string
-): Promise<DeleteNoteResponse> => {
-    try {
-        const response: AxiosDeleteNoteResponse = await axios.delete(
-            `${notesEndpoint}/${id}`
-        );
-        return response.data;
-    } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        throw new Error(
-            axiosError.response?.data?.message || axiosError.message || 'Failed to delete note'
-        );
-    }
+export const deleteNote = async (id: string): Promise<Note> => {
+    const response: AxiosResponse<Note> = await notesApi.delete(`${notesEndpoint}/${id}`);
+    return response.data;
 };
 
