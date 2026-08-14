@@ -55,7 +55,7 @@ const App = () => {
             </main>
             {isModalOpen && (
                 <Modal onClose={() => setIsModalOpen(false)}>
-                    <NoteForm/>
+                    <NoteForm onSuccessSubmit={() => setIsModalOpen(false)}/>
                 </Modal>
             )}
         </div>
