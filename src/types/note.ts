@@ -1,10 +1,6 @@
 // General interfaces related to the Note entity
 
-export interface NoteTag {
-  id: string;
-  name: string;
-  color?: string;
-}
+export type NoteTag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 
 export interface Note {
   id: string;
@@ -15,9 +11,7 @@ export interface Note {
   tag?: string;
 }
 
-export type NoteFormData = Omit<Note, "id" | "createdAt" | "updatedAt" | "tag"> & {
-  tags: NoteTag[];
-};
+export type NoteFormData = Omit<Note, "id"| "createdAt" | "updatedAt" >
 
 export interface NoteSearchParams {
   search?: string;
