@@ -1,8 +1,13 @@
 import axios, {type AxiosResponse} from 'axios';
-import type {Note, NoteFormData, NoteSearchParams} from '../types/note';
+import type {Note, NoteFormData} from '../types/note';
 
 
 // HTTP Request Parameters Interfaces
+export interface NoteSearchParams {
+    search?: string;
+    tagIds?: string[];
+}
+
 export interface FetchNotesParams extends NoteSearchParams {
     page?: number;
     perPage?: number;

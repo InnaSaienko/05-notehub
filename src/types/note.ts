@@ -8,12 +8,7 @@ export interface Note {
   content: string;
   createdAt: string;
   updatedAt: string;
-  tag?: string;
+  tag: NoteTag;
 }
 
 export type NoteFormData = Omit<Note, "id"| "createdAt" | "updatedAt" >
-
-export interface NoteSearchParams {
-  search?: string;
-  tagIds?: string[];
-}
