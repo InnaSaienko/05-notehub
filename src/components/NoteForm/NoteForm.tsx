@@ -102,6 +102,7 @@ const NoteForm = ({onSuccessSubmit}: NoteFormProps) => {
                         <button
                             type="submit"
                             className={css.submitButton}
+                            onClick={onSuccessSubmit}
                             disabled={isSubmitting || !isValid}
                         >
                             Create note
